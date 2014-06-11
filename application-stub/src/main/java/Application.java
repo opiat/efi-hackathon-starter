@@ -4,6 +4,7 @@ import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import sample.jpa.model.SomethingToPersit;
@@ -16,6 +17,8 @@ import sample.jpa.repository.OrderRepository;
 // pakiecie co Application lub bezposrednich podpakietach
 @EntityScan(basePackageClasses = SomethingToPersit.class)
 @EnableJpaRepositories(basePackageClasses = OrderRepository.class)
+//rozne ustawienia aplikacji
+@PropertySource("classpath:application.properties")
 public class Application {
 
 	public static void main(String[] args) {
