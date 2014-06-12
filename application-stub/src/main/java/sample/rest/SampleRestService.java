@@ -10,4 +10,5 @@ public class SampleRestService {
 	public String greet(){
 		return "hello";
 	}
+
 }

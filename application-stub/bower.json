@@ -1,0 +1,24 @@
+{
+  "name": "application-stub",
+  "version": "0.0.1",
+  "homepage": "https://github.com/opiat/efi-hackathon-starter",
+  "authors": [
+    "efigence team"
+  ],
+  "description": "efi hackathon starter",
+  "main": "index.html",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.17",
+    "angular-resource": "~1.2.17",
+    "angular-route": "~1.2.17"
+  }
+}

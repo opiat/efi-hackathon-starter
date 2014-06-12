@@ -1,8 +1,13 @@
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.spi.LoggerFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
@@ -19,7 +24,9 @@ import static sample.domain.builder.EventBuilder.event;
 @EnableAutoConfiguration
 @EnableMongoRepositories
 @Configuration
-public class Application implements CommandLineRunner {
+public class Application extends SpringBootServletInitializer implements CommandLineRunner {
+
+    private static final Log LOGGER = LogFactory.getLog(Application.class);
 
     @Autowired
     private EventRepository eventRepository;
@@ -28,8 +35,13 @@ public class Application implements CommandLineRunner {
         SpringApplication.run(Application.class, args);
     }
 
+
     @Override
-    public void run(String... strings) throws Exception {
+    protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+        return application.sources(Application.class);
+    }
+
+    public void init()  {
 
         eventRepository.deleteAll();
 
@@ -55,7 +67,12 @@ public class Application implements CommandLineRunner {
 
         List<Event> events = eventRepository.findAll();
         for(Event event : events) {
-            System.out.println(event);
+            LOGGER.info(event);
         }
+    }
+
+    @Override
+    public void run(String... strings) throws Exception {
+        init();
     }
 }
