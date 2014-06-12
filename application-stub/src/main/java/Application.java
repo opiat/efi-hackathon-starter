@@ -1,32 +1,61 @@
+import org.joda.time.DateTime;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.boot.orm.jpa.EntityScan;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.context.annotation.ImportResource;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
+import sample.domain.Event;
+import sample.domain.builder.EventBuilder;
+import sample.repository.EventRepository;
 
-import sample.jpa.model.SomethingToPersit;
-import sample.jpa.repository.OrderRepository;
+import java.util.List;
 
+import static sample.domain.builder.EventBuilder.event;
+
+@ComponentScan(basePackages = "sample")
 @EnableAutoConfiguration
+@EnableMongoRepositories
 @Configuration
-@ComponentScan
-// Konfiguracja JPA, konieczna gdy repozytoria i encje nie sa w tym samym
-// pakiecie co Application lub bezposrednich podpakietach
-@EntityScan(basePackageClasses = SomethingToPersit.class)
-@EnableJpaRepositories(basePackageClasses = OrderRepository.class)
-//rozne ustawienia aplikacji
-@PropertySource("classpath:application.properties")
-public class Application {
+public class Application implements CommandLineRunner {
 
-	public static void main(String[] args) {
-		ConfigurableApplicationContext ctx = SpringApplication.run(
-				Application.class, args);
+    @Autowired
+    private EventRepository eventRepository;
 
-		OrderRepository orderRepository = ctx.getBean(OrderRepository.class);
-		orderRepository.save(new SomethingToPersit());
-		System.out.println("All orders: " + orderRepository.findAll());
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
+    }
+
+    @Override
+    public void run(String... strings) throws Exception {
+
+        eventRepository.deleteAll();
+
+
+        for(int i = 0; i < 10 ; i ++) {
+
+            Event event = event()
+                    .withDescription("This is meeting in Bar number " + i)
+                    .withName("Let's meet again (nr ( " + i + ")")
+                    .withMeetUpDate(DateTime.now().plusDays(i).plusHours(i).plusMinutes(i))
+                    .withUser()
+                    .withName("Bożydar " + i)
+                    .withEmail("dar.boży." + i + "@rodzice.przegrali.zaklad.pl")
+                    .endUser()
+                    .withPlace()
+                    .withPlace("Super miejscowa " + i)
+                    .endPlace()
+                    .build();
+
+            eventRepository.save(event);
+
+        }
+
+        List<Event> events = eventRepository.findAll();
+        for(Event event : events) {
+            System.out.println(event);
+        }
+    }
 }

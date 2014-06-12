@@ -1,20 +1,23 @@
 package sample.jpa.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+//import javax.persistence.Entity;
+//import javax.persistence.GeneratedValue;
+//import javax.persistence.GenerationType;
+//import javax.persistence.Id;
 
-@Entity
+/**
+ * technological reserve
+ */
+//@Entity
 public class SomethingToPersit {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+//	@Id
+//	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
 	public String description = "desc";
 
-	@Override
+//	@Override
 	public String toString() {
 		return String.valueOf(id);
 	}
