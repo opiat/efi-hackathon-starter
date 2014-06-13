@@ -1,6 +1,9 @@
+package sample;
+
+import com.mongodb.Mongo;
+import com.mongodb.MongoClient;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.log4j.spi.LoggerFactory;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -8,19 +11,20 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
+import org.springframework.data.mongodb.MongoDbFactory;
+import org.springframework.data.mongodb.core.SimpleMongoDbFactory;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import sample.domain.Event;
-import sample.domain.builder.EventBuilder;
 import sample.repository.EventRepository;
 
 import java.util.List;
 
 import static sample.domain.builder.EventBuilder.event;
 
-@ComponentScan(basePackages = "sample")
+@ComponentScan(basePackageClasses = Application.class)
 @EnableAutoConfiguration
 @EnableMongoRepositories
 @Configuration
@@ -34,7 +38,6 @@ public class Application extends SpringBootServletInitializer implements Command
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
-
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
