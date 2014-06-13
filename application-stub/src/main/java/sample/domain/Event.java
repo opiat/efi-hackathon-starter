@@ -2,6 +2,7 @@ package sample.domain;
 
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -14,6 +15,7 @@ public class Event implements Serializable{
     private ObjectId id;
     private String name;
     private String description;
+    @CreatedDate
     private DateTime meetUpDate;
     private Place place;
     private User owner;
